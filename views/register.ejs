@@ -1,0 +1,34 @@
+<% include ./partials/header %>
+
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<h1>Sign Up</h1>
+		<form action="/register" method="POST">
+			<div class="form-group">
+				<label for="username-field">Username</label>
+				<input id="username-field" class="form-control" type="text" name="username" required autofocus>
+			</div>
+			<div class="form-group">
+				<label for="password-field">Password</label>
+				<input id="password-field" class="form-control" type="password" name="password" required>
+			</div>
+			<div class="form-group">
+				<a class="btn" data-toggle="collapse" href="#admin-box" role="button" aria-expanded="false">
+					Admin? Click Here
+				</a>
+				<div class="collapse" id="admin-box">
+					<div class="card card-body">
+						<label for="code-field">Code for Administrative Role</label>
+						<input id="code-field" class="form-control" type="password" name="adminCode">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+		<a class="btn btn-success" href="/forums/">Go Back</a>
+	</div>
+</div>
+
+<% include ./partials/footer %>

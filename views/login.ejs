@@ -1,0 +1,23 @@
+<% include ./partials/header %>
+
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<h1>Login</h1>
+		<form action="/login" method="POST">
+			<div class="form-group">
+				<label for="username-field">Username</label>
+				<input id="username-field" class="form-control" type="text" name="username" autofocus>
+			</div>
+			<div class="form-group">
+				<label for="password-field">Password</label>
+				<input id="password-field" class="form-control" type="password" name="password">
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Login</button>
+			</div>
+		</form>
+		<a class="btn btn-success" href="/forums/">Go Back</a>
+	</div>
+</div>
+
+<% include ./partials/footer %>

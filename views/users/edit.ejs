@@ -1,0 +1,19 @@
+<% include ../partials/header %>
+
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<h1>Edit User Avatar</h1>
+		<form action="/users/<%= user._id %>/?_method=PUT" method="POST">
+			<div class="form-group">
+                <label for="avatar-field">Edit User Avatar (Copy URL)</label>
+                <input id="avatar-field" class="form-control" type="text" name="user[avatar]" value="<%= user.avatar %>" required autofocus>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+        </form>
+        <a class="btn btn-success" href="/users/<%= user._id %>/">Go Back</a>
+	</div>
+</div>
+
+<% include ../partials/footer %>

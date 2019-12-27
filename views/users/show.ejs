@@ -1,0 +1,43 @@
+<% include ../partials/header %>
+
+<h1 class="text-center">
+    <%= user.username %>
+    <% if(user.isAdmin) { %>
+        (Admin)
+    <% } %>
+</h1>
+<div class="row">
+    <div class="col-md-4 text-center">
+        <div class="img-thumbnail">
+            <img class="img-fluid" src="<%= user.avatar %>" alt="User profile avatar">
+        </div>
+        <% if(currentUser && user.equals(currentUser)) { %>
+            <a class="btn btn-warning" href="/users/<%= user._id %>/edit">Edit User Avatar</a>
+        <% } %>
+        <% if(currentUser && currentUser.isAdmin && !user.isAdmin) { %>
+            <a class="btn btn-danger" data-toggle="collapse" href="#collapse-<%= user._id %>" role="button" aria-expanded="false">
+                Delete User
+            </a>
+            <div class="collapse" id="collapse-<%= user._id %>">
+                <div class="card card-body">
+                    <p><span class="text-danger">WARNING</span>: This will remove the user AND all their associated threads and posts. Are you sure?</p>
+                    <form action="/users/<%= user._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Yes</button>
+                        <a class="btn btn-success" data-toggle="collapse" href="#collapse-<%= user._id %>" role="button" aria-expanded="false">
+                            No
+                        </a>
+                    </form>
+                </div>
+            </div>
+        <% } %>
+        <p>Joined: <%= moment(user.createdAt).calendar() %></p>
+        <a class="btn btn-success" href="/forums/">Go Back</a>
+    </div>
+    <div class="col-md-8 text-center">
+        <h3>Latest Activity</h3>
+        <a class="btn btn-success" href="/users/<%= user._id %>/threads/1">Latest Threads</a>
+        <a class="btn btn-success" href="/users/<%= user._id %>/posts/1">Latest Posts</a>
+    </div>
+</div>
+
+<% include ../partials/footer %>

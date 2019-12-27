@@ -1,0 +1,78 @@
+<% include ../partials/header %>
+
+<h1 class="text-center">
+    <%= user.username %>'s Latest Threads
+</h1>
+<div class="row">
+    <div class="col-md-4 text-center">
+        <div class="img-thumbnail">
+            <img class="img-fluid" src="<%= user.avatar %>" alt="User profile avatar">
+        </div>
+        <p>Joined: <%= moment(user.createdAt).calendar() %></p>
+        <a class="btn btn-success" href="/users/<%= user._id %>">Go Back</a>
+    </div>
+    <div class="col-md-8">
+        <div class="text-center">
+            <h3>Threads (<%= numberOfResults %> found):</h3>
+            <h5>Page <%= currentPage %> of <%= pages %></h5>
+        </div>
+        <ul class="list-group">
+            <% threads.forEach(function(thread) { %>
+                <li class="list-group-item text-truncate">
+                    <p>"<%= thread.title %>"</p>
+                    <p><%= moment(thread.createdAt).fromNow() %></p>
+                </li>
+            <% }); %>
+        </ul>
+        <nav> <!-- Begin Pagination-->
+            <ul class="pagination">
+                <% if (currentPage == 1 && pages > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/users/<%= user._id %>/threads/<%= parseInt(currentPage) + 1 %>/">
+                            Page <%=  parseInt(currentPage) + 1 %> &gt;
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/users/<%= user._id %>/threads/<%= parseInt(pages) %>/">
+                            Last Page (<%=  parseInt(pages) %>) &gt;&gt;
+                        </a>
+                    </li>
+                <% } else if (currentPage < pages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/users/<%= user._id %>/threads/1/">
+                            &lt;&lt; First Page (1)
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/users/<%= user._id %>/threads/<%= parseInt(currentPage) - 1 %>/">
+                            &lt; Page <%=  parseInt(currentPage) - 1 %>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/users/<%= user._id %>/threads/<%= parseInt(currentPage) + 1 %>/">
+                            Page <%=  parseInt(currentPage) + 1 %> &gt;
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/users/<%= user._id %>/threads/<%= parseInt(pages) %>/">
+                            Last Page (<%=  parseInt(pages) %>) &gt;&gt;
+                        </a>
+                    </li>
+                <% } else if (currentPage == pages && pages > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/users/<%= user._id %>/threads/1/">
+                            &lt;&lt; First Page (1)
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/users/<%= user._id %>/threads/<%= parseInt(currentPage) - 1 %>/">
+                            &lt; Page <%=  parseInt(currentPage) - 1 %>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav> <!-- End Pagination-->
+    </div>
+</div>
+
+<% include ../partials/footer %>

@@ -1,0 +1,19 @@
+<% include ../partials/header %>
+
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<h1>Edit Post</h1>
+		<form action="/forums/<%= forum_id %>/threads/<%= thread_id %>/posts/<%= post._id %>?_method=PUT" method="POST">
+			<div class="form-group">
+				<label for="message-field">New Message (No longer than 2000 characters)</label>
+				<textarea id="message-field" class="form-control" name="post[message]" maxlength="2000" rows="8" autofocus><%= post.message %></textarea>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+        </form>
+        <a class="btn btn-success" href="/forums/<%= forum_id %>/threads/<%= thread_id %>/1">Go Back</a>
+	</div>
+</div>
+
+<% include ../partials/footer %>

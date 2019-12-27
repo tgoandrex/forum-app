@@ -1,0 +1,104 @@
+<% include ../partials/header %>
+<div class="text-center">
+    <h1 class="text-center">
+        <%= thread.title %>
+        <% if(thread.isLocked) { %>
+            (LOCKED)
+        <% } %>
+    </h1>
+    <h3>Page <%= currentPage %> of <%= pages %></h3>
+</div>
+<% if(currentUser) { %>
+    <a class="btn btn-success" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/posts/new">Add New Post</a>
+<% } %>
+<div class="row">
+    <div class="col-12">
+        <% posts.forEach(function(post) { %>
+            <div class="card border-dark">
+                <div class="card-header">
+                    <div class="card-text">
+                        <%= moment(post.createdAt).calendar() %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <a class="text-center" href="/users/<%= post.author.id %>"><h3 class="card-title text-primary"><%= post.author.username %></h3></a>
+                        <% if(currentUser && thread.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+                            <a class="btn btn-warning" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/posts/<%= post._id %>/edit">Edit Post</a>
+                            <a class="btn btn-danger" data-toggle="collapse" href="#collapse-<%= post._id %>" role="button" aria-expanded="false">
+                                Delete Post
+                            </a>
+                            <div class="collapse" id="collapse-<%= post._id %>">
+                                <div class="card card-body">
+                                    <p><span class="text-danger">WARNING</span>: This will delete the post. Are you sure?</p>
+                                    <form action="/forums/<%= forum_id %>/threads/<%= thread._id %>/posts/<%= post._id %>?_method=DELETE" method="POST">
+                                        <button class="btn btn-danger">Yes</button>
+                                        <a class="btn btn-success" data-toggle="collapse" href="#collapse-<%= post._id %>" role="button" aria-expanded="false">
+                                            No
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <p><%= post.message %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+<nav> <!-- Begin Pagination-->
+    <ul class="pagination">
+        <% if (currentPage == 1 && pages > 1) { %>
+            <li class="page-item">
+                <a class="page-link" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/<%= parseInt(currentPage) + 1 %>/">
+                    Page <%=  parseInt(currentPage) + 1 %> &gt;
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/<%= parseInt(pages) %>/">
+                    Last Page (<%=  parseInt(pages) %>) &gt;&gt;
+                </a>
+            </li>
+        <% } else if (currentPage < pages) { %>
+            <li class="page-item">
+                <a class="page-link" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/1/">
+                    &lt;&lt; First Page (1)
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/<%= parseInt(currentPage) - 1 %>/">
+                    &lt; Page <%=  parseInt(currentPage) - 1 %>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/<%= parseInt(currentPage) + 1 %>/">
+                    Page <%=  parseInt(currentPage) + 1 %> &gt;
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/<%= parseInt(pages) %>/">
+                    Last Page (<%=  parseInt(pages) %>) &gt;&gt;
+                </a>
+            </li>
+        <% } else if (currentPage == pages && pages > 1) { %>
+            <li class="page-item">
+                <a class="page-link" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/1/">
+                    &lt;&lt; First Page (1)
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="/forums/<%= forum_id %>/threads/<%= thread._id %>/<%= parseInt(currentPage) - 1 %>/">
+                    &lt; Page <%=  parseInt(currentPage) - 1 %>
+                </a>
+            </li>
+        <% } %>
+    </ul>
+</nav> <!-- End Pagination-->
+<a class="btn btn-success" href="/forums/<%= forum_id %>/1">Go Back</a>
+
+<% include ../partials/footer %>

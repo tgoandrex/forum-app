@@ -1,0 +1,70 @@
+<% include ../partials/header %>
+
+<h1 class="text-center">Forums</h1>
+<% if(currentUser && currentUser.isAdmin) { %>
+	<a class="btn btn-success" href="/forums/new">Add New Forum</a>
+<% } %>
+<div class="row">
+	<% forums.forEach(function(forum) { %>
+		<div class="col-lg-6">
+			<div class="card border-dark">
+				<div class="card-header">
+					<h3 class="card-title">
+						<a class="d-block" href="/forums/<%= forum._id %>/1"><%= forum.name %></a>
+						<small class="text-muted d-block text-truncate"><%= forum.description %></small>
+						<% if(forum.isLocked) { %>
+							(LOCKED)
+						<% } %>
+						<% if(currentUser && forum.author.id.equals(currentUser._id) && currentUser.isAdmin) { %>
+							<form action="/forums/<%= forum._id %>/lock" method="POST">
+								<button class="btn btn-warning">
+									<% if(forum.isLocked) { %>
+										Unlock Forum
+									<% } else { %>
+										Lock Forum
+									<% } %>
+								</button>
+							</form>
+						<% } %>
+					</h3>
+					<% if(currentUser && forum.author.id.equals(currentUser._id) && currentUser.isAdmin) { %>
+						<a class="btn btn-warning" href="/forums/<%= forum._id %>/edit">Edit Forum</a>					
+						<a class="btn btn-danger" data-toggle="collapse" href="#collapse-<%= forum._id %>" role="button" aria-expanded="false">
+							Delete Forum
+						</a>
+						<div class="collapse" id="collapse-<%= forum._id %>">
+							<div class="card card-body">
+								<p><span class="text-danger">WARNING</span>: This will delete the forum AND all associated threads and posts. Are you sure?</p>
+								<form action="/forums/<%= forum._id %>?_method=DELETE" method="POST">
+									<button class="btn btn-danger">Yes</button>
+									<a class="btn btn-success" data-toggle="collapse" href="#collapse-<%= forum._id %>" role="button" aria-expanded="false">
+										No
+									</a>
+								</form>
+							</div>
+						</div>
+					<% } %>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-6">
+							<h5>Created by: <a href="/users/<%= forum.author.id %>"><%= forum.author.username %></a></h5>
+							<span class="d-block">Threads: <%= forum.threads.length %></span>
+						</div>
+						<div class="col-lg-6">
+							<% if(forum.threads.length >= 1) { %>
+								<span class="d-block">
+									Lastest Thread By: <a href="/users/<%= forum.latestThread.author.id %>"><%= forum.latestThread.author.username %></a> 
+									Date: <%= moment(forum.latestThread.createdAt).calendar() %>
+								</span>
+								<span class="d-block text-truncate">"<%= forum.latestThread.title %>"</span>
+							<% } %>		
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<% }); %>
+</div>
+
+<% include ../partials/footer %>
